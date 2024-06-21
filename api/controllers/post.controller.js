@@ -26,7 +26,10 @@ export const getPosts = async (req, res) => {
       minPrice: parseInt(query.minPrice),
       maxPrice: parseInt(query.maxPrice)
     });
-    res.status(200).json(posts);
+
+    setTimeout(() => {
+      res.status(200).json(posts);
+    }, 1000);
 
   } catch (error) {
     console.error(error);
@@ -94,13 +97,21 @@ export const deletePost = async (req, res) => {
   const id = req.params.id;
   const tokenUserId = req.userId
 
+  console.log(tokenUserId);
+
   try {
     const post = await prisma.post.findUnique(
       { where: { id } }
     );
+
+    console.log(post);
     if (post.userId !== tokenUserId) {
       return res.status(403).json({ message: 'You are not allowed to delete this post!' });
     }
+
+    await prisma.postDetail.deleteMany({
+      where: { postId: id }
+    });
 
     await prisma.post.delete({
       where: { id }
@@ -109,7 +120,8 @@ export const deletePost = async (req, res) => {
     res.status(200).json({ message: 'Post deleted successfully!' });
 
   } catch (error) {
-    console.error(error);
+    // console.error(error);
+    console.error('Error details:', error);
     res.status(500).json({ message: 'Failed to delete post!' });
   }
 };
