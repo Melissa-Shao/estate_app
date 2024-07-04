@@ -75,7 +75,6 @@ function ProfileUpdatePage() {
             cloudName: "melissadev",
             uploadPreset: "estate",
             multiple: false,
-            maxImageFileSize: 2000000,
             folder: "avatars",
           }}
           setState={setAvatar}

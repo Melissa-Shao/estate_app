@@ -5,6 +5,8 @@ const CloudinaryScriptContext = createContext();
 
 function UploadWidget({ uwConfig, setState }) {
   const [loaded, setLoaded] = useState(false);
+  const [cloudinary, setCloudinary] = useState(null);
+  const [myWidget, setMyWidget] = useState(null);
 
   useEffect(() => {
     // Check if the script is already loaded
@@ -16,18 +18,22 @@ function UploadWidget({ uwConfig, setState }) {
         script.setAttribute("async", "");
         script.setAttribute("id", "uw");
         script.src = "https://upload-widget.cloudinary.com/global/all.js";
-        script.addEventListener("load", () => setLoaded(true));
+        script.addEventListener("load", () =>{
+          setLoaded(true);
+          setCloudinary(window.cloudinary);
+      });
         document.body.appendChild(script);
       } else {
         // If already loaded, update the state
         setLoaded(true);
+        setCloudinary(window.cloudinary);
       }
     }
   }, [loaded]);
 
-  const initializeCloudinaryWidget = () => {
-    if (loaded) {
-      var myWidget = window.cloudinary.createUploadWidget(
+  useEffect(() => {
+    if (loaded && cloudinary && !myWidget) {
+      const widget = window.cloudinary.createUploadWidget(
         uwConfig,
         (error, result) => {
           if (!error && result && result.event === "success") {
@@ -36,14 +42,13 @@ function UploadWidget({ uwConfig, setState }) {
           }
         }
       );
+      setMyWidget(widget);
+    }
+  }, [loaded, cloudinary, uwConfig, setState, myWidget]);
 
-      document.getElementById("upload_widget").addEventListener(
-        "click",
-        function () {
-          myWidget.open();
-        },
-        false
-      );
+  const handleButtonClick = () => {
+    if (myWidget) {
+      myWidget.open();
     }
   };
 
@@ -52,7 +57,7 @@ function UploadWidget({ uwConfig, setState }) {
       <button
         id="upload_widget"
         className="cloudinary-button"
-        onClick={initializeCloudinaryWidget}
+        onClick={handleButtonClick}
       >
         Upload
       </button>
