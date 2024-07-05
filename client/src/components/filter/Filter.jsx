@@ -5,7 +5,7 @@ import { useState } from 'react'
 function Filter() {
 
   const [searchParams, setSearchParams] = useSearchParams()
-  // console.log(searchParams.get('city'))
+  console.log(searchParams.get('city'))
   const [query, setQuery] = useState({
     type: searchParams.get('type') || '',
     city: searchParams.get('city') || '',
