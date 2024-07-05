@@ -6,7 +6,7 @@ import ProfilePage from "./routes/profilePage/profilePage";
 import Login from "./routes/login/login";
 import Register from "./routes/register/register";
 import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage";
-import { singlePageLoader, listPageLoader } from "./lib/loaders";
+import { singlePageLoader, listPageLoader, profilePageLoader } from "./lib/loaders";
 
 import {
   createBrowserRouter,
@@ -53,6 +53,7 @@ function App() {
         {
           path: "/profile",
           element: <ProfilePage />,
+          loader: profilePageLoader
         },
         {
           path: "/profile/update",
