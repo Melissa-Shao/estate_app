@@ -1,43 +1,26 @@
 import './chat.scss'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext'
 
-function Chat() {
-  const [chat, setChat] = useState(true)
+function Chat({ chats }) {
+  const [chat, setChat] = useState(false)
+  // console.log(chats)
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <div className='chat'>
       <div className="messages">
         <h1>Messages</h1>
-        <div className="message">
-          <img src="/profile.jpg" alt="" />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet?</p>
-        </div>
-        <div className="message">
-          <img src="/profile.jpg" alt="" />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet?</p>
-        </div>
-        <div className="message">
-          <img src="/profile.jpg" alt="" />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet?</p>
-        </div>
-        <div className="message">
-          <img src="/profile.jpg" alt="" />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet?</p>
-        </div>
-        <div className="message">
-          <img src="/profile.jpg" alt="" />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet?</p>
-        </div>
-        <div className="message">
-          <img src="/profile.jpg" alt="" />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet?</p>
-        </div>
+        {
+          chats?.map(chat => (
+
+            <div className="message" key={chat.id} style={{ backgroundColor: chat.seenBy.includes(currentUser.id) ? "white" : "#fecd514e" }}>
+              <img src={chat.receiver.avatar || "/profile.jpg"} alt="" />
+              <span>{chat.receiver.username}</span>
+              <p>{chat.lastMessage}</p>
+            </div>
+
+          ))}
       </div>
 
       {chat && (<div className="chatBox">
