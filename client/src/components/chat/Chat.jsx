@@ -78,12 +78,12 @@ function Chat({ chats }) {
       <div className="messages">
         <h1>Messages</h1>
         {
-          chats?.map(chat => (
+          chats?.map(c => (
 
-            <div className="message" key={chat.id} style={{ backgroundColor: chat.seenBy.includes(currentUser.id) || chat?.id === chat.id ? "white" : "#fecd514e" }} onClick={() => handleOpenChat(chat.id, chat.receiver)}>
-              <img src={chat.receiver.avatar || "/profile.jpg"} alt="" />
-              <span>{chat.receiver.username}</span>
-              <p>{chat.lastMessage}</p>
+            <div className="message" key={c.id} style={{ backgroundColor: c.seenBy.includes(currentUser.id) || chat?.id === c.id ? "white" : "#fecd514e" }} onClick={() => handleOpenChat(c.id, c.receiver)}>
+              <img src={c.receiver.avatar || "/profile.jpg"} alt="" />
+              <span>{c.receiver.username}</span>
+              <p>{c.lastMessage}</p>
             </div>
 
           ))}
