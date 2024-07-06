@@ -1,11 +1,37 @@
 import './chat.scss'
 import { useState, useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
+import apiRequest from '../../lib/apiRequest'
+import { format } from "timeago.js"
 
 function Chat({ chats }) {
-  const [chat, setChat] = useState(false)
+  const [chat, setChat] = useState(null)
   // console.log(chats)
   const { currentUser } = useContext(AuthContext);
+
+  const handleOpenChat = async (id, receiver) => {
+    try {
+      const res = await apiRequest("/chats/" + id);
+      setChat({ ...res.data, receiver })
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const text = formData.get("text");
+    if (!text) return;
+    try {
+      const res = await apiRequest.post("/messages/" + chat.id, { text });
+      setChat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
+      e.target.reset();
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div className='chat'>
@@ -14,7 +40,7 @@ function Chat({ chats }) {
         {
           chats?.map(chat => (
 
-            <div className="message" key={chat.id} style={{ backgroundColor: chat.seenBy.includes(currentUser.id) ? "white" : "#fecd514e" }}>
+            <div className="message" key={chat.id} style={{ backgroundColor: chat.seenBy.includes(currentUser.id) ? "white" : "#fecd514e" }} onClick={() => handleOpenChat(chat.id, chat.receiver)}>
               <img src={chat.receiver.avatar || "/profile.jpg"} alt="" />
               <span>{chat.receiver.username}</span>
               <p>{chat.lastMessage}</p>
@@ -26,45 +52,26 @@ function Chat({ chats }) {
       {chat && (<div className="chatBox">
         <div className="top">
           <div className="user">
-            <img src="/profile.jpg" alt="" />
-            John Doe
+            <img src={chat.receiver.avatar || "/profile.jpg"} alt="" />
+            {chat.receiver.username}
           </div>
           <span className='close' onClick={() => setChat(null)}>X</span>
         </div>
         <div className="center">
-          <div className="chatMessage own">
-            <p>Lorem ipsum dolor sit amet.</p>
-            <span>1 hour ago</span>
-          </div>
-          <div className="chatMessage">
-            <p>Lorem ipsum dolor sit amet.</p>
-            <span>1 hour ago</span>
-          </div>
-          <div className="chatMessage own">
-            <p>Lorem ipsum dolor sit amet.</p>
-            <span>1 hour ago</span>
-          </div>
-          <div className="chatMessage">
-            <p>Lorem ipsum dolor sit amet.</p>
-            <span>1 hour ago</span>
-          </div>
-          <div className="chatMessage own">
-            <p>Lorem ipsum dolor sit amet.</p>
-            <span>1 hour ago</span>
-          </div>
-          <div className="chatMessage">
-            <p>Lorem ipsum dolor sit amet.</p>
-            <span>1 hour ago</span>
-          </div>
-          <div className="chatMessage own">
-            <p>Lorem ipsum dolor sit amet.</p>
-            <span>1 hour ago</span>
-          </div>
+          {chat.messages.map((message) => (
+            <div className="chatMessage" style={{
+              alignSelf: message.userId === currentUser.id ? "flex-end" : "flex-start",
+              textAlign: message.userId === currentUser.id ? "right" : "left",
+            }} key={message.id}>
+              <p>{message.text}</p>
+              <span>{format(message.createdAt)}</span>
+            </div>
+          ))}
         </div>
-        <div className="bottom">
-          <textarea></textarea>
+        <form onSubmit={handleSubmit} className="bottom">
+          <textarea name="text"></textarea>
           <button>Send</button>
-        </div>
+        </form>
       </div>)}
     </div>
   )
