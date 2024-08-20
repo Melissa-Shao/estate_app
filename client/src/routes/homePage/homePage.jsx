@@ -13,24 +13,24 @@ function HomePage() {
       <div className="textContainer">
         <div className="wrapper">
           <h1 className='title'>
-            Find Real Estate & Get Your Dream Place
+            Unlock Your Dream Home with Smile Estate
           </h1>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur deleniti repudiandae distinctio corporis ullam nulla eius, officiis reiciendis. Debitis ea in animi, sapiente veniam beatae odit enim dignissimos dolorem necessitatibus!
-          </p>
+          <h4>
+            Discover the perfect place to call home. At Smile Estate, we make finding real estate simple, seamless, and tailored to your needs. Start your journey today!
+          </h4>
           <SearchBar />
           <div className="boxes">
             <div className="box">
               <h1>16+</h1>
-              <h2>Lorem, ipsum.</h2>
+              <h2>Years of Experience</h2>
             </div>
             <div className="box">
-              <h1>100+</h1>
-              <h2>Lorem, ipsum.</h2>
+              <h1>200+</h1>
+              <h2>Award Gained</h2>
             </div>
             <div className="box">
               <h1>2000+</h1>
-              <h2>Lorem, ipsum.</h2>
+              <h2>Property Ready</h2>
             </div>
           </div>
         </div>
