@@ -23,10 +23,11 @@ app.use('/api/chats', chatRoute);
 app.use('/api/messages', messageRoute);
 
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
+const clientPath = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(clientPath));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+  res.sendFile(path.resolve(clientPath, 'index.html'));
 });
 
 app.listen(3000, () => {
