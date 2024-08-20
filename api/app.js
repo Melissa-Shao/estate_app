@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 import postRoute from './routes/post.route.js';
 import authRoute from './routes/auth.route.js';
 import testRoute from './routes/test.route.js';
@@ -20,6 +21,13 @@ app.use('/api/posts', postRoute);
 app.use('/api/test', testRoute);
 app.use('/api/chats', chatRoute);
 app.use('/api/messages', messageRoute);
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+});
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000.');
