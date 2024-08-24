@@ -82,7 +82,7 @@ nav {
         height: 40px;
         border-radius: 50%;
         object-fit: cover;
-        margin-right: 20px;
+        margin-right: 40px;
       }
 
       span {
@@ -143,7 +143,7 @@ nav {
       @include sm {
         display: inline;
         position: absolute;
-        right: 2px;
+        right: -10px;
       }
     }
 

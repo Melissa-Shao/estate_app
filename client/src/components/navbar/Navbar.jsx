@@ -44,12 +44,12 @@ function Navbar() {
           <img src="/menu.png" alt="" onClick={() => setOpen((prev) => !prev)} />
         </div>
         <div className={open ? "menu active" : "menu"}>
-          <Link to="/">Home</Link>
-          <Link to="/">About</Link>
-          <Link to="/">Contact</Link>
-          <Link to="/">Agents</Link>
-          <Link to="/login">Sign in</Link>
-          <Link to="/register">Sign up</Link>
+          <Link to="/" onClick={() => setOpen(false)}>Home</Link>
+          <Link to="/" onClick={() => setOpen(false)}>About</Link>
+          <Link to="/" onClick={() => setOpen(false)}>Contact</Link>
+          <Link to="/" onClick={() => setOpen(false)}>Agents</Link>
+          <Link to="/login" onClick={() => setOpen(false)}>Sign in</Link>
+          <Link to="/register" onClick={() => setOpen(false)}>Sign up</Link>
         </div>
       </div>
     </nav>
