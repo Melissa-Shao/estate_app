@@ -10,7 +10,20 @@ export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    setSocket(io("http://localhost:4000"));
+    const socket = io("http://localhost:4000");
+    setSocket(socket);
+
+    socket.on("connect", () => {
+      console.log("Connected to Socket.io server");
+    });
+
+    socket.on("connect_error", (error) => {
+      console.error("Connection Error:", error);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
