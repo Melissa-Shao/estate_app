@@ -56,7 +56,12 @@ nav {
     justify-content: flex-end;
     background-color: #fcf5f3;
     height: 100%;
+    position: relative;
 
+    .sign-in-button {
+      z-index: 5;
+      position: relative;
+    }
 
     @include md {
       background-color: transparent;
@@ -137,16 +142,18 @@ nav {
 
       @include sm {
         display: inline;
+        position: absolute;
+        right: 2px;
       }
     }
 
     .menu {
       position: absolute;
       top: 0;
-      right: -50%;
+      right: -150%;
       background-color: black;
       color: white;
-      width: 50%;
+      width: 120%;
       height: 100vh;
       transition: all 0.5s ease;
       display: flex;
@@ -165,6 +172,5 @@ nav {
         }
       }
     }
-
   }
 }

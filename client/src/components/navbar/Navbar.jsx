@@ -20,14 +20,14 @@ function Navbar() {
   return (
     <nav>
       <div className="left">
-        <Link href="/" className="logo">
+        <Link to="/" className="logo">
           <img src="/logo.png" alt="" />
           <span>Smile Estate</span>
         </Link>
-        <Link href="/">Home</Link>
-        <Link href="/">About</Link>
-        <Link href="/">Contact</Link>
-        <Link href="/">Agents</Link>
+        <Link to="/">Home</Link>
+        <Link to="/">About</Link>
+        <Link to="/">Contact</Link>
+        <Link to="/">Agents</Link>
       </div>
       <div className="right">
         {currentUser ? (<div className="user">
@@ -38,18 +38,18 @@ function Navbar() {
             <span>Profile</span>
           </Link>
         </div>) : (
-          <><a href="/login">Sign in</a>
-            <a href="/register" className="register"><span className="signup-text">Sign up</span></a></>)}
+          <><Link to="/login" className="sign-in-button" onClick={() => console.log('Sign in clicked')}>Sign in</Link>
+            <Link to="/register" className="register"><span className="signup-text">Sign up</span></Link></>)}
         <div className="menuIcon">
           <img src="/menu.png" alt="" onClick={() => setOpen((prev) => !prev)} />
         </div>
         <div className={open ? "menu active" : "menu"}>
-          <Link href="/">Home</Link>
-          <Link href="/">About</Link>
-          <Link href="/">Contact</Link>
-          <Link href="/">Agents</Link>
-          <Link href="/">Sign in</Link>
-          <Link href="/">Sign up</Link>
+          <Link to="/">Home</Link>
+          <Link to="/">About</Link>
+          <Link to="/">Contact</Link>
+          <Link to="/">Agents</Link>
+          <Link to="/login">Sign in</Link>
+          <Link to="/register">Sign up</Link>
         </div>
       </div>
     </nav>
