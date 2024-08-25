@@ -4,8 +4,8 @@ import './slider.scss'
 function Slider({ images }) {
   const [imageIndex, setImageIndex] = useState(null);
 
-  const changeSlide = (direaction) => {
-    if (direaction === "left") {
+  const changeSlide = (direction) => {
+    if (direction === "left") {
       if (imageIndex === 0) {
         setImageIndex(images.length - 1)
       }
