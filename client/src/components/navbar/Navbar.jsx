@@ -21,7 +21,7 @@ function Navbar() {
     <nav>
       <div className="left">
         <Link to="/" className="logo">
-          <img src="/logo.png" alt="" />
+          <img src="/smile.png" alt="" />
           <span>Smile Estate</span>
         </Link>
         <Link to="/">Home</Link>
