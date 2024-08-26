@@ -2,17 +2,58 @@ import List from '../../components/list/List'
 import './profilePage.scss'
 import Chat from '../../components/chat/Chat'
 import apiRequest from "../../lib/apiRequest"
-import { Await, useNavigate, useLoaderData } from 'react-router-dom'
-import { Suspense, useContext } from 'react'
+import { Await, useNavigate, useLoaderData, useLocation } from 'react-router-dom'
+import { Suspense, useContext, useEffect, useRef } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import { Link } from 'react-router-dom'
 
 
 function ProfilePage() {
   const data = useLoaderData();
+
+  const chats = data.chatResponse?.data;
+  const posts = data.postResponse?.data;
+
+  // console.log(chats);  
+  // console.log(posts);
   const { updateUser, currentUser } = useContext(AuthContext)
 
   const navigate = useNavigate()
+
+  const location = useLocation();
+  const { receiverId, receiverName } = location.state || {};
+
+  const chatInitiatedRef = useRef(false);
+
+  useEffect(() => {
+    if (receiverId && location.state && !chatInitiatedRef.current) {
+      chatInitiatedRef.current = true;
+      console.log('Location State:', location.state);
+      startNewChat(receiverId, receiverName);
+    }
+  }, [receiverId, receiverName]);
+
+
+  const startNewChat = async (receiverId, receiverName) => {
+    try {
+      const existingChat = chats.find(c => c.receiver.id === receiverId);
+      if (existingChat) {
+        console.log('Chat already exists with receiverId:', receiverId);
+        navigate('/profile', { state: { chatId: existingChat.id, receiverName } });
+        return;
+      }
+
+      console.log('Starting new chat with receiverId:', receiverId);
+      const res = await apiRequest.post('/chats', { receiverId });
+      const newChat = res.data;
+
+      console.log('New Chat:', newChat);
+      navigate('/profile', { state: { chatId: newChat.id, receiverName } });
+    } catch (err) {
+      console.log('Failed to start chat', err);
+    }
+  };
+
 
   const handleLogout = async () => {
     try {
@@ -84,7 +125,7 @@ function ProfilePage() {
               }
             >
               {(chatResponse) =>
-                <Chat chats={chatResponse.data} />}
+                <Chat chats={chatResponse.data} chatId={location.state?.chatId} />}
             </Await>
           </Suspense>
 

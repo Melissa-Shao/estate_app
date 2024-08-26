@@ -18,12 +18,20 @@ export const listPageLoader = async ({ request, params }) => {
   });
 }
 
-export const profilePageLoader = async () => {
-  const postPromise = apiRequest("/users/profilePosts")
-  const chatPromise = apiRequest("/chats")
 
-  return defer({
-    postResponse: postPromise,
-    chatResponse: chatPromise,
-  });
-}
+export const profilePageLoader = async () => {
+  try {
+    const postPromise = apiRequest("/users/profilePosts");
+    const chatPromise = apiRequest("/chats");
+
+    const [postResponse, chatResponse] = await Promise.all([postPromise, chatPromise]);
+
+    return defer({
+      postResponse,
+      chatResponse,
+    });
+  } catch (error) {
+    console.error("Error loading profile page data:", error);
+    throw error;
+  }
+};

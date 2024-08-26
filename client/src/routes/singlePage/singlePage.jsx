@@ -4,12 +4,12 @@ import './singlepage.scss'
 import { useNavigate, useLoaderData } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import { AuthContext } from '../../context/AuthContext'
-import apiReuest from '../../lib/apiRequest'
+import apiRequest from '../../lib/apiRequest'
 import DOMPurify from 'dompurify'
 
 function SinglePage() {
   const post = useLoaderData();
-  console.log(post)
+  // console.log(post)
   const [saved, setSaved] = useState(post.isSaved)
   const { currentUser } = useContext(AuthContext)
   const navigate = useNavigate()
@@ -19,14 +19,20 @@ function SinglePage() {
     if (!currentUser) {
       navigate('/login')
     }
-
     try {
-      await apiReuest.post('/users/save', { postId: post.id })
+      await apiRequest.post('/users/save', { postId: post.id })
     } catch (err) {
       console.log(err)
       setSaved((prev) => !prev)
     }
   }
+
+  const handleSendMessage = () => {
+    // console.log('Post User ID:', post.userId); 
+    // console.log('Post User Username:', post.user.username);  
+    navigate('/profile', { state: { receiverId: post.userId, receiverName: post.user.username } });
+  };
+
   return (
     <div className='singlePage'>
       <div className="details">
@@ -132,7 +138,7 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-            <button>
+            <button onClick={handleSendMessage}>
               <img src=" /chat.png" alt="" />
               Send a message
             </button>
