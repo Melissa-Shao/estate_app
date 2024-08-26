@@ -26,12 +26,9 @@ function ProfilePage() {
   const chatInitiatedRef = useRef(false);
 
   useEffect(() => {
-    if (receiverId && location.state && !chatInitiatedRef.current) {
+    if (receiverId && !chatInitiatedRef.current) {
       chatInitiatedRef.current = true;
-      console.log('Location State:', location.state);
-      if (!window.location.pathname.includes('profile')) {
-        startNewChat(receiverId, receiverName);
-      }
+      startNewChat(receiverId, receiverName);
     }
   }, [receiverId, receiverName]);
 
