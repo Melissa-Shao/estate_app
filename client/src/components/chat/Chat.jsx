@@ -91,7 +91,7 @@ function Chat({ chats, chatId }) {
           chats?.map(c => (
 
             <div className="message" key={c.id} style={{ backgroundColor: c.seenBy.includes(currentUser.id) || chat?.id === c.id ? "white" : "#fecd514e" }} onClick={() => handleOpenChat(c.id, c.receiver)}>
-              <img src={c.receiver.avatar || "/profile.jpg"} alt="" />
+              <img src={c.receiver.avatar || "/noavatar.jpg"} alt="" />
               <span>{c.receiver.username}</span>
               <p>{c.lastMessage}</p>
             </div>
@@ -102,7 +102,7 @@ function Chat({ chats, chatId }) {
       {chat && (<div className="chatBox">
         <div className="top">
           <div className="user">
-            <img src={chat.receiver.avatar || "/profile.jpg"} alt="" />
+            <img src={chat.receiver.avatar || "/noavatar.jpg"} alt="" />
             {chat.receiver.username}
           </div>
           <span className='close' onClick={() => setChat(null)}>X</span>

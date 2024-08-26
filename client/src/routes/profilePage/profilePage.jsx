@@ -29,10 +29,17 @@ function ProfilePage() {
     if (receiverId && location.state && !chatInitiatedRef.current) {
       chatInitiatedRef.current = true;
       console.log('Location State:', location.state);
-      startNewChat(receiverId, receiverName);
+      if (!window.location.pathname.includes('profile')) {
+        startNewChat(receiverId, receiverName);
+      }
     }
   }, [receiverId, receiverName]);
 
+  useEffect(() => {
+    if (location.state?.chatId) {
+      navigate('/profile', { replace: true });
+    }
+  }, []);
 
   const startNewChat = async (receiverId, receiverName) => {
     try {
