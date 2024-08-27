@@ -2,6 +2,13 @@ import './map.scss'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import Pin from '../pin/Pin'
+import L from 'leaflet';
+
+
+L.Icon.Default.mergeOptions({
+  iconUrl: '/marker-icon.png',
+  shadowUrl: '/marker-shadow.png',
+});
 
 function Map({ items }) {
   return (
