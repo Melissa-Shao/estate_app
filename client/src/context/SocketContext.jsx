@@ -10,7 +10,9 @@ export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:4000");
+    const socket = io(process.env.NODE_ENV === 'production'
+      ? "https://smile-estate-app.onrender.com"
+      : "http://localhost:4000");
     setSocket(socket);
 
     socket.on("connect", () => {
