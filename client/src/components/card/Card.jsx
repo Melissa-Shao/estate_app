@@ -35,14 +35,14 @@ function Card({ item }) {
 
           </div>
 
-          <div className="icons">
+          {/* <div className="icons">
             <div className="icon">
               <img src="/save.png" alt="" />
             </div>
             <div className="icon">
               <img src="/chat.png" alt="" />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
