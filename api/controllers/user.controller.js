@@ -88,6 +88,7 @@ export const savePost = async (req, res) => {
 
   const postId = req.body.postId;
   const tokenUserId = req.userId;
+  // console.log("Request data:", { postId, tokenUserId });
 
   try {
     const savedPost = await prisma.savedPost.findUnique({
@@ -98,6 +99,7 @@ export const savePost = async (req, res) => {
         }
       }
     });
+    // console.log("Saved Post found:", savedPost);
 
     if (savedPost) {
       await prisma.savedPost.delete({
@@ -109,6 +111,7 @@ export const savePost = async (req, res) => {
     }
 
     else {
+      // console.log("No existing saved post found, creating new saved post.");
       await prisma.savedPost.create({
         data: {
           userId: tokenUserId,

@@ -32,6 +32,13 @@ function Chat({ chats, chatId }) {
     if (chat && chat.id === id) return;
     try {
       const res = await apiRequest("/chats/" + id);
+
+      const uniqueUserIDs = Array.from(new Set(res.data.userIDs));
+      if (uniqueUserIDs.length < 2) {
+        console.error('Invalid chat with duplicate or invalid user IDs.');
+        return;
+      }
+
       if (!res.data.seenBy.includes(currentUser.id)) {
         decrease();
       }
@@ -46,6 +53,8 @@ function Chat({ chats, chatId }) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const text = formData.get("text");
+    // console.log("Chat ID:", chat?.id);
+    // console.log("Message text:", text);
     if (!text) return;
     try {
       const res = await apiRequest.post("/messages/" + chat.id, { text });

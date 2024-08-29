@@ -12,8 +12,17 @@ export const getChats = async (req, res) => {
       }
     });
 
+    // console.log('Chats found:', chats);
+
     for (const chat of chats) {
+      // console.log('Chat userIDs:', chat.userIDs);
       const receiverId = chat.userIDs.find(id => id !== tokenUserId);
+      // console.log('Receiver ID:', receiverId);
+
+      if (!receiverId) {
+        console.warn(`Invalid chat record found, skipping chat with ID: ${chat.id}`);
+        continue;
+      }
 
       const receiver = await prisma.user.findUnique({
         where: {
@@ -75,13 +84,21 @@ export const getChat = async (req, res) => {
 
 export const addChat = async (req, res) => {
   const tokenUserId = req.userId;
+  const receiverId = req.body.receiverId;
 
   try {
+    const uniqueUserIDs = Array.from(new Set([tokenUserId, receiverId]));
+
+    if (uniqueUserIDs.length < 2) {
+      return res.status(400).json({ message: 'Cannot create a chat with the same user ID or invalid IDs.' });
+    }
+
     const newChat = await prisma.chat.create({
       data: {
-        userIDs: [tokenUserId, req.body.receiverId],
+        userIDs: uniqueUserIDs,
       }
     });
+
     res.status(200).json(newChat);
   } catch (err) {
     console.log(err);
