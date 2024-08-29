@@ -20,7 +20,12 @@ function SinglePage() {
       navigate('/login')
     }
     try {
-      await apiRequest.post('/users/save', { postId: post.id })
+      const response = await apiRequest.post('/users/save', { postId: post.id });
+      if (response.data.message === 'Post saved successfully.') {
+        setSaved(true);
+      } else if (response.data.message === 'Post already saved.') {
+        alert('This post is already saved.');
+      }
     } catch (err) {
       console.log(err)
       setSaved((prev) => !prev)

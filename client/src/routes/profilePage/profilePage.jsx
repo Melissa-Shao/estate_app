@@ -25,6 +25,14 @@ function ProfilePage() {
 
   const chatInitiatedRef = useRef(false);
 
+ 
+  useEffect(() => {
+    if (location.state?.refresh) {
+      console.log('Refresh page due to new post creation'); 
+      navigate('/profile', { replace: true });
+    }
+  }, [location.state?.refresh, navigate]);
+
   useEffect(() => {
     if (receiverId && !chatInitiatedRef.current) {
       chatInitiatedRef.current = true;
@@ -98,7 +106,10 @@ function ProfilePage() {
                 <p>Error loading posts!</p>
               }
             >
-              {(postResponse) => <List posts={postResponse.data.userPosts} />}
+              {(postResponse) => {
+                console.log('Rendering Posts:', postResponse.data.userPosts); 
+                return <List posts={postResponse.data.userPosts} />
+              }}
             </Await>
           </Suspense>
 
